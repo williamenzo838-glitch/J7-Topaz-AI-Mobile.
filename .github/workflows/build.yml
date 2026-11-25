@@ -1,0 +1,47 @@
+
+name: Build J7 Topaz AI Mobile APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract project ZIP
+        run: |
+          unzip -o J7-Topaz-AI-Mobile.zip -d extracted
+          find extracted -name pubspec.yaml
+
+      - name: Locate Flutter project
+        run: |
+          PROJECT=$(find extracted -name pubspec.yaml -printf '%h\n' | head -n 1)
+          echo "PROJECT=$PROJECT" >> $GITHUB_ENV
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
+        run: |
+          cd "$PROJECT"
+          flutter pub get
+
+      - name: Build APK
+        run: |
+          cd "$PROJECT"
+          flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: J7-Topaz-AI-Mobile-APK
+          path: ${{ env.PROJECT }}/build/app/outputs/flutter-apk/app-release.apk
