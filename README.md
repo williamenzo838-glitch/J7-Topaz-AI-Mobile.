@@ -1,27 +1,27 @@
 # J7 Topaz AI Mobile
 
-Projeto Flutter para Android.
+Projeto Flutter para Android, preparado para compilar APK pelo GitHub Actions.
 
-## O que esta versão já oferece
-- Interface escura estilo J7.
-- Seleção de fotos da galeria.
-- Seleção e pré-visualização de vídeos.
-- Controles visuais de nitidez, redução de ruído, detalhes e brilho.
-- Seleção de resolução-alvo (720p, 1080p, 2K e 4K).
-- Workflow do GitHub Actions que gera os arquivos Android e compila o APK release.
+## O que funciona nesta primeira versão
+- Seleção de fotos e vídeos da galeria.
+- Fotos: redimensionamento bicúbico até limite de 3840 px no lado maior e filtro de nitidez configurável.
+- Vídeos: transcodificação H.264/AAC com AndroidX Media3 Transformer e saída com altura de até 2160 px (4K UHD para conteúdo horizontal).
+- Interface escura J7, controles e status de processamento.
 
-## Limitação importante
-Esta é a primeira base do aplicativo. Os controles ainda são apenas parâmetros de interface: não existe processamento real de super-resolução por IA nem exportação aprimorada nesta versão. Selecionar 4K não converte o arquivo para 4K. A implementação do motor de processamento e exportação é uma etapa posterior.
+## Limitações importantes
+Esta versão NÃO contém os modelos de IA proprietários do Topaz. Os controles de redução de ruído e fidelidade são exibidos na interface, mas ainda não estão conectados a modelos de IA; a nitidez é aplicada no processamento de fotos. A exportação de vídeo faz upscale/transcodificação por Media3, não super-resolução neural. Em um Redmi 13C, 4K pode exigir muito tempo, espaço e memória e pode não ser suportado por todos os arquivos de origem. O tamanho final nunca recupera detalhes que não existiam na origem.
 
-## Gerar APK pelo GitHub
-1. Envie o conteúdo deste ZIP para a raiz do repositório GitHub.
-2. Abra a aba **Actions** do repositório.
-3. Se necessário, habilite GitHub Actions.
-4. Abra **Build J7 APK** e toque em **Run workflow** (ou faça um commit na branch `main`).
-5. Quando terminar, abra a execução concluída e baixe o artefato **J7-Topaz-AI-Mobile-APK**.
-6. Extraia o ZIP do artefato para encontrar `app-release.apk`.
+## Gerar APK usando somente o celular
+1. Baixe e extraia `J7_Topaz_AI_Mobile.zip`.
+2. Abra github.com no navegador e crie um repositório novo chamado `J7-Topaz-AI-Mobile`.
+3. Envie o conteúdo da pasta do projeto para a raiz do repositório (o arquivo `pubspec.yaml` deve ficar na raiz).
+4. Abra a aba **Actions** do repositório e permita executar workflows, se o GitHub pedir.
+5. O workflow **Build J7 Android APK** inicia após o envio. Também pode abrir Actions, selecionar o workflow e tocar em **Run workflow**.
+6. Quando terminar com sucesso, abra a execução, desça até **Artifacts** e baixe `J7-Topaz-AI-Mobile-APK`.
+7. Extraia o ZIP baixado e instale `app-release.apk`. Se o Android bloquear, permita instalar apps dessa origem nas configurações.
 
-## Pacotes
-- Flutter
-- image_picker
-- video_player
+## Compilar localmente
+Com Flutter instalado: `flutter pub get` e `flutter build apk --release`.
+
+## Identificador
+`com.j7.topaz_ai_mobile`
